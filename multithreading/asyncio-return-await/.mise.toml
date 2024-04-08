@@ -1,0 +1,6 @@
+[env]
+MISE_PYTHON_COMPILE = 1
+
+[tools]
+python = "3.12.1"
+#poetry = {version='latest', pyproject='pyproject.toml'}
