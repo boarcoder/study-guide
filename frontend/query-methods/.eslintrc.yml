@@ -1,0 +1,24 @@
+root: true
+extends: 
+  - airbnb-base
+parserOptions:
+  sourceType: module
+  ecmaVersion: 13
+plugins:
+  - '@stylistic'
+rules:
+  brace-style:
+    - error
+    - stroustrup
+  react/react-in-jsx-scope:
+    off
+  array-element-newline:
+    - error
+    - multiline: true
+  object-curly-newline:
+    - error
+    - multiline: true
+  no-multiple-empty-lines:
+    - error
+    - max: 1
+  no-multi-str: off
