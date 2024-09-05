@@ -26,7 +26,7 @@ Route traffic to each server based on routing policies.
 
 ### Layer 4 vs Layer 7 (L4 vs L7) Load Balancing
 
-#### Layer 4
+#### Layer 4 - Network LB (NLB)
 
 Requests are routed based on details exposed by layer
 
@@ -36,7 +36,7 @@ Requests are routed based on details exposed by layer
 
 *+ Computationally faster*
 
-#### Layer 7
+#### Layer 7 - App LB (ALB or ADC - App delivery controller)
 
 Requests are routed based on header contents
 

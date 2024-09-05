@@ -1,5 +1,0 @@
-[env]
-MISE_PYTHON_COMPILE = 1
-
-[tools]
-java = "corretto-21"

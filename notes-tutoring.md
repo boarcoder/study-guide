@@ -1,6 +1,0 @@
-
-# Tutoring
-
-- Rate: x
-
-- 
