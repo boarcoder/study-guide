@@ -2,6 +2,6 @@
 MISE_PYTHON_COMPILE = 1
 
 [tools]
-python = "3.12.1"
+python = "latest"
 poetry = "latest"
 #poetry = {version='latest', pyproject='pyproject.toml'}

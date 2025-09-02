@@ -52,3 +52,17 @@ def example_bin_search():
     left_i = bisect_left(arr, target)
     if left_i < len(arr) and arr[left_i] == target:
         return left_i
+
+
+"""
+For fun: how to use a condition with bisect.
+Just make the key function return the conditional evaluation.
+Set target to True (condition == True)
+"""
+
+
+def condition(elem):
+    return elem == "cool"
+
+
+bisect_left(arr, True, key=condition)
