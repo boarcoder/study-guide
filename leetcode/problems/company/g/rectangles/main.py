@@ -29,37 +29,45 @@ class State:
 
 class Solution:
     def is_valid_sol(self, state):
-        if len(state.solution) < len(state.res):
+        # Only consider updating when current solution is longer than best
+        if len(state.solution) <= len(state.res):
             return False
-        state.solution.sort()
         prev = [float("-inf"), float("-inf")]
         for el in state.solution:
             if not (prev[0] < el[0] and prev[1] < el[1]):
                 return False
+            prev = el
         return True
 
     def get_candidates(self, state, i):
-        for j in range(i, len(state.rectangle_list)):
-            return [state.rectangle_list[j]]
-        return []
+        # Not used in the fixed backtracking, kept for compatibility
+        return state.rectangle_list[i:]
 
     def solve(self, state, i):
+        # At the end of the array, consider updating best
         if i >= len(state.rectangle_list):
-            return None
-        if self.is_valid_sol(state):
-            state.res = state.solution[::]
+            if self.is_valid_sol(state):
+                state.res = state.solution[::]
+            return
 
-        for c in self.get_candidates(state, i):
-            state.solution += [c]
+        # Option 1: skip current rectangle
+        self.solve(state, i + 1)
+
+        # Option 2: include current rectangle if it keeps strict increase
+        cur = state.rectangle_list[i]
+        if not state.solution or (state.solution[-1][0] < cur[0] and state.solution[-1][1] < cur[1]):
+            state.solution.append(cur)
             self.solve(state, i + 1)
             state.solution.pop()
 
     def rectangle_thing(self, rectangle_list):
+        # Sort to allow reordering for stacking consideration
+        sorted_rects = sorted(rectangle_list, key=lambda x: (x[0], x[1]))
         solution = []
         res = []
-        state = State(rectangle_list, solution, res)
+        state = State(sorted_rects, solution, res)
         self.solve(state, 0)
-        return res
+        return state.res
 
 
 class TestRectangle(unittest.TestCase):
@@ -109,16 +117,16 @@ class TestRectangle(unittest.TestCase):
         s = Solution()
         rectangle_list = [
             [3, 3],
-            [3, 4],  # width equal to 3, length greater — cannot be stacked on [3,3] since width not greater
+            [3, 4],  # width equal to 3, length greater - cannot be stacked on [3,3] since width not greater
             [4, 5],
         ]
-        # Max chain should be [3,3] -> [4,5]
-        expected = [
-            [3, 3],
-            [4, 5],
+        # Max chain length is 2. Either [3,3]->[4,5] or [3,4]->[4,5]
+        expected_options = [
+            [[3, 3], [4, 5]],
+            [[3, 4], [4, 5]],
         ]
         actual = s.rectangle_thing(rectangle_list)
-        self.assertEqual(expected, actual)
+        self.assertIn(actual, expected_options)
 
     def test_with_duplicates(self):
         # Duplicates should not artificially increase chain length
