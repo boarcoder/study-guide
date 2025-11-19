@@ -111,25 +111,6 @@ class Quack:
             dll.insert(val)
         return dll.get_list()
 
-    def get_sorted_super_simple(self):
-        """
-        Return sorted elements without touching the backing storage by
-        repeatedly forcing pops from the tail (current max). Reversing the
-        descending sequence yields the sorted order in O(N) time.
-        """
-        import random
-
-        original_choice = random.choice
-        descending = []
-        try:
-            random.choice = lambda _: False  # Always pop tail (max element)
-            while self.size() > 0:
-                descending.append(self.pop())
-        finally:
-            random.choice = original_choice
-        descending.reverse()
-        return descending
-
 
 import unittest
 from unittest.mock import patch
@@ -179,14 +160,6 @@ class TestQuack(unittest.TestCase):
             side_effect=[True, False, True, False, True, False],
         ):
             sorted_values = self.quack.get_sorted()
-        self.assertEqual(sorted_values, sorted(values))
-        self.assertEqual(self.quack.size(), 0)
-
-    def test_get_sorted_super_simple_returns_sorted_order_and_drains(self):
-        values = [4, 2, 4, 1]
-        for val in values:
-            self.quack.insert(val)
-        sorted_values = self.quack.get_sorted_super_simple()
         self.assertEqual(sorted_values, sorted(values))
         self.assertEqual(self.quack.size(), 0)
 
